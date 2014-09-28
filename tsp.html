@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>TSP</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/tsp/WillyLoman.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.inorder.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.onerandom.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.iteraterandom.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.bestnearestneighbor.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.bruteforce.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.branchnbound.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.ga.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.gamutation.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.gacrossover.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.twooptfirst.js"></script>
+<script type="text/javascript" src="/tsp/corbos.tsp.twooptbest.js"></script>
+<script type="text/javascript" src="/tsp/WillyLoman.UI.js"></script>
+<script type="text/javascript">
+$(function() {
+    var spnDistance = $('#spnDistance');
+    var spnIteration = $('#spnIteration');
+    var spnImprovement = $('#spnImprovement');
+    var notify = function(distance, iteration, improvements) {
+        spnDistance.text(distance);
+        spnIteration.text(iteration);
+        spnImprovement.text(improvements);
+    };
+    var ui = new WillyLoman.UI(document.getElementById('thecanvas'), notify);
+    $.each(WillyLoman.algorithms, function(key, value) {
+        $('#ddlAlgo').append('<option value="' + key + '">' + value.name + '</option');
+    });
+    $('#btnAddRandom').click(function(){
+        ui.addRandom(document.getElementById('txtAddCount').value);
+    });
+    $('#btnClear').click(function(){
+        ui.clear();
+    });
+    $('#btnGo').click(function() {
+        ui.solve($('#ddlAlgo').val());
+    });
+    $('#btnStop').click(function(){
+        ui.stop();
+    });
+});
+</script>
+<style>
+body{
+    background-color:#EEE;
+}
+#thecanvas {
+    background-color:#FFFFFF;
+}
+</style>
+</head>
+<body>
+<p>
+Click on the canvas to add cities.
+</p>
+<p>
+...or add
+<input type="text" id="txtAddCount" value="35" /> random points.
+<input type="button" id="btnAddRandom" value="Add" />
+</p>
+<canvas id="thecanvas" width="800" height="500">
+Your browser does not support the canvas element. Sorry.
+</canvas>
+<div>
+<select id="ddlAlgo">
+</select>
+<input type="button" id="btnGo" value="Solve" />
+<input type="button" id="btnStop" value="Stop" />
+<input type="button" id="btnClear" value="Clear" />
+</div>
+<p>
+Distance: <span id="spnDistance"></span><br />
+Iteration: <span id="spnIteration"></span><br />
+Improvements: <span id="spnImprovement"></span>
+</p>
+</body>
+</html>
