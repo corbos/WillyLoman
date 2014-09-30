@@ -2,93 +2,100 @@
     'use strict';
 
     var BranchNBound = function (solver) {
-
         this.solver = solver;
         this.possible = solver.getPossible();
-        this.solution = [];
-        this.solution.push(this.possible.pop());
-        this.indexes = [];
-        this.distances = [];
-        for(var i = 0; i < this.possible.length; i++)
-            this.indexes[i] = 0;
+        this.solution = [this.possible[0]];
+        this.candidates = [];
         this.depth = 0;
         this.currentDistance = 0.0;
         this.bestDistance = Number.MAX_VALUE;
         this.best = [];
+        this.initDistances();
+        this.setUpCandidates();
+    };
+    
+    BranchNBound.prototype.initDistances = function() {
         this.distances = [];
-
-        var pts = solver.points;
-
+        var pts = this.solver.points;
         for(var i = 0; i < pts.length; i++) {
             this.distances[i] = [];
             for (var j = i + 1; j < pts.length; j++) {
                 this.distances[i][j - i - 1] = willy.distance(pts[i],pts[j]);
             }
-        }
+        } 
+    };
 
-        var bnn = willy.getAlgorithm("BestNearestNeighbor");
-        if (bnn)
-            this.nn = new bnn(solver);
+    BranchNBound.prototype.sortDistanceDesc = function(a,b) { return b.distance - a.distance; };
+
+    BranchNBound.prototype.setUpCandidates = function() {
+        var parent = this.solution[this.solution.length - 1];
+        var sortable = [];
+        this.possible.forEach(function(i) {
+            if (this.solution.indexOf(i) === -1) {
+                sortable.push({
+                    index:i,
+                    distance: this.lookupDistance(parent, i)
+                });
+            }
+        }, this);
+        sortable.sort(this.sortDistanceDesc);
+        this.candidates.push(sortable.map(function(i) { return i.index; }));
     };
 
     BranchNBound.prototype.solve = function () {
 
-        if(this.nn && !this.nn.done) {
-            var result = this.nn.solve();
-            var pd = this.solver.pathDistance(result);
-            if(pd < this.bestDistance) {
-                this.bestDistance = pd;
-                this.best = result;
-            }
-            return result;
-        }
-
         var count = 0;
         var pts = this.solver.points;
-        var solution = this.solution;
-        var possible = this.possible;
-        var d = 0.0;
+        var solution = this.solution;      
+        var d = 0.0,
+            candidates,
+            c;
 
         while(count++ < 1000) {
 
-            if(this.possible.length === 1) { // leaf node
-
-                d = willy.distance(pts[solution[solution.length - 1]], pts[possible[0]]) +
-                    willy.distance(pts[solution[0]], pts[possible[0]]);
-
-                if(d + this.currentDistance < this.bestDistance) {
-                    this.bestDistance = d + this.currentDistance;
-                    this.best = solution.slice(0);
-                    this.best.push(possible[0]);
-                }
-
-                this.backup();
-            }
+            candidates = this.candidates[this.candidates.length - 1];
+           
             // no more options at this depth
-            else if(this.indexes[this.depth] >= this.possible.length) {
+            if(candidates.length === 0) {
                 this.backup();
                 if(this.depth < 0) {
                     this.done = true;
                     break;
                 }
             }
+            else if(this.depth === pts.length - 2) { // leaf node
+
+                c = candidates[0];
+
+                d = willy.distance(pts[solution[solution.length - 1]], pts[c]) +
+                    willy.distance(pts[solution[0]], pts[c]);
+
+                if(d + this.currentDistance < this.bestDistance) {
+                    this.bestDistance = d + this.currentDistance;
+                    this.best = solution.slice(0);
+                    this.best.push(c);
+                }
+
+                this.backup();
+            }
             else {
 
-                d = willy.distance(pts[solution[solution.length - 1]], pts[possible[this.indexes[this.depth]]]);
-                solution.push(possible.splice(this.indexes[this.depth], 1)[0]);
+                c = candidates.pop();
+
+                d = willy.distance(pts[solution[solution.length - 1]], pts[c]);
+                solution.push(c);
                 this.currentDistance += d;
 
-                var bestGuess = this.getBestGuess();
+                var bestGuess = this.getBestGuess(candidates);
 
                 if(this.currentDistance + bestGuess >= this.bestDistance) {
                     this.currentDistance -= d;
-                    possible.splice(this.indexes[this.depth], 0, solution.pop());
-                    this.indexes[this.depth]++;
+                    solution.pop();
                 }
                 else {
                     this.distances.push(d);
-                    this.indexes[this.depth + 1] = 0;
                     this.depth++;
+                    this.setUpCandidates();
                 }
             }
         }
@@ -99,8 +106,8 @@
     BranchNBound.prototype.backup = function() {
         this.depth--;
         if(this.depth >= 0) {
-            this.possible.splice(this.indexes[this.depth], 0, this.solution.pop());
-            this.indexes[this.depth]++;
+            this.candidates.pop();
+            this.solution.pop();
             this.currentDistance -= this.distances.pop();
         }
     };
@@ -111,7 +118,7 @@
         return this.distances[first][second - first - 1];
     };
 
-    BranchNBound.prototype.getBestGuess = function() {
+    BranchNBound.prototype.getBestGuess = function(candidates) {
 
         var bestGuess = 0.0,
             minFirstHop = Number.MAX_VALUE,
@@ -121,13 +128,13 @@
             maxDistance = 0.0,
             minDistance = Number.MAX_VALUE;
 
-        this.possible.forEach(function (i) {
+        candidates.forEach(function (i) {
 
             minFirstHop = Math.min(minFirstHop, this.lookupDistance(firstIndex, i));
             minLastHop = Math.min(minLastHop, this.lookupDistance(lastIndex, i));
 
             minDistance = Number.MAX_VALUE
-            this.possible.forEach(function (j) {
+            candidates.forEach(function (j) {
                 if(i !== j)
                     minDistance = Math.min(minDistance, this.lookupDistance(i, j));
             }, this);
