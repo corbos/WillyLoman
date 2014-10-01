@@ -1,49 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>WillyLoman and the Traveling Salesman Problem</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="/src/WillyLoman.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.inorder.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.onerandom.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.iteraterandom.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.bestnearestneighbor.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.bruteforce.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.branchnbound.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.ga.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.gamutation.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.gacrossover.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.twooptfirst.js"></script>
-<script type="text/javascript" src="/src/corbos.tsp.twooptbest.js"></script>
-<script type="text/javascript" src="/src/WillyLoman.UI.js"></script>
-<script type="text/javascript">
-$(function() {
-    var spnDistance = $('#spnDistance');
-    var spnIteration = $('#spnIteration');
-    var spnImprovement = $('#spnImprovement');
-    var notify = function(distance, iteration, improvements) {
-        spnDistance.text(distance);
-        spnIteration.text(iteration);
-        spnImprovement.text(improvements);
-    };
-    var ui = new WillyLoman.UI(document.getElementById('thecanvas'), notify);
-    $.each(WillyLoman.algorithms, function(key, value) {
-        $('#ddlAlgo').append('<option value="' + key + '">' + value.name + '</option');
-    });
-    $('#btnAddRandom').click(function(){
-        ui.addRandom(document.getElementById('txtAddCount').value);
-    });
-    $('#btnClear').click(function(){
-        ui.clear();
-    });
-    $('#btnGo').click(function() {
-        ui.solve($('#ddlAlgo').val());
-    });
-    $('#btnStop').click(function(){
-        ui.stop();
-    });
-});
-</script>
+<title>WillyLoman and the Traveling Salesman Problem</title> 
 <style>
 body{
     background-color:#EEE;
@@ -77,5 +35,48 @@ Distance: <span id="spnDistance"></span><br />
 Iteration: <span id="spnIteration"></span><br />
 Improvements: <span id="spnImprovement"></span>
 </p>
+<script type="text/javascript" src="/src/WillyLoman.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.inorder.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.onerandom.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.iteraterandom.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.bestnearestneighbor.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.bruteforce.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.branchnbound.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.ga.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.gamutation.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.gacrossover.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.twooptfirst.js"></script>
+<script type="text/javascript" src="/src/corbos.tsp.twooptbest.js"></script>
+<script type="text/javascript" src="/src/WillyLoman.UI.js"></script>
+<script type="text/javascript">
+(function() {
+    var byId = function(id) { return document.getElementById(id); };
+    var spnDistance = byId('spnDistance');
+    var spnIteration = byId('spnIteration');
+    var spnImprovement = byId('spnImprovement');
+    var ddlAlgo = byId('ddlAlgo');
+    var notify = function(distance, iteration, improvements) {
+        spnDistance.innerHTML = distance;
+        spnIteration.innerHTML = iteration;
+        spnImprovement.innerHTML = improvements;
+    };
+    var ui = new WillyLoman.UI(byId('thecanvas'), notify);
+    for(var key in WillyLoman.algorithms) {
+        ddlAlgo.appendChild(new Option(WillyLoman.algorithms[key].name, key));
+    }   
+    byId('btnAddRandom').addEventListener('click', function() {
+        ui.addRandom(byId('txtAddCount').value);
+    });
+    byId('btnClear').addEventListener('click', function() {
+        ui.clear();
+    });
+    byId('btnGo').addEventListener('click', function() {
+        ui.solve(ddlAlgo.value);
+    });
+    byId('btnStop').addEventListener('click', function() {
+        ui.stop();
+    });
+})();
+</script>
 </body>
 </html>

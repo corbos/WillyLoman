@@ -2,10 +2,13 @@
     'use strict';
 
     var CIRCLE_RADIUS = 4.0;
-    var LINE_COLOR = 'rgb(0,0,255)';  
+    var LINE_COLOR = '#0000FF';  
     var LINE_WIDTH = 1.0;  
 
     var UI = function(canvas, notify) {
+
+        if(typeof notify !== "function")
+            notify = function(){};
 
         var ui = this;
         this.canvas = canvas;

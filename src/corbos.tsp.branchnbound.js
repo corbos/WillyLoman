@@ -86,9 +86,9 @@
                 solution.push(c);
                 this.currentDistance += d;
 
-                var bestGuess = this.getBestGuess(candidates);
+                var lowerBound = this.getLowerBound(candidates);
 
-                if(this.currentDistance + bestGuess >= this.bestDistance) {
+                if(this.currentDistance + lowerBound >= this.bestDistance) {
                     this.currentDistance -= d;
                     solution.pop();
                 }
@@ -118,9 +118,9 @@
         return this.distances[first][second - first - 1];
     };
 
-    BranchNBound.prototype.getBestGuess = function(candidates) {
+    BranchNBound.prototype.getLowerBound = function(candidates) {
 
-        var bestGuess = 0.0,
+        var lowerBound = 0.0,
             minFirstHop = Number.MAX_VALUE,
             minLastHop = Number.MAX_VALUE,
             firstIndex = this.solution[0],
@@ -140,21 +140,21 @@
             }, this);
 
             if (minDistance < maxDistance) {
-                bestGuess += minDistance;
+                lowerBound += minDistance;
             }
             else {
-                bestGuess += maxDistance;
+                lowerBound += maxDistance;
                 maxDistance = minDistance;
             }
 
         }, this);
 
-        return bestGuess + minFirstHop + minLastHop;
+        return lowerBound + minFirstHop + minLastHop;
     };
 
     willy.register({
         key: 'BranchNBound',
-        name: 'Branch And Bound (sorta)',
+        name: 'Branch And Bound (not really)',
         BranchNBound: BranchNBound
     });
 
