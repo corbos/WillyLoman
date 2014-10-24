@@ -16,21 +16,38 @@ WillyLoman = (function(){
             var xDelta = pt1.x - pt2.x;
             var yDelta = pt1.y - pt2.y;
             return Math.sqrt((xDelta * xDelta) + (yDelta * yDelta));
-        }, 
+        },
 
         algorithms:{},
+
+        extensions:[],
+
         register: function(algo) {
            this.algorithms[algo.key] = algo;
         },
+
         getAlgorithm: function(key) {
             var algo = this.algorithms[key];
             if(algo !== undefined)
                 return algo[algo.key]; // return the constructor
         },
+
         extendAlgorithm: function (destination, srcKey, propertyKey) {
-            var algo = this.getAlgorithm(srcKey);
-            if(algo !== undefined)
-                destination.prototype[propertyKey] = algo.prototype[propertyKey];
+            this.extensions.push({
+                destination: destination,
+                srcKey: srcKey,
+                propertyKey: propertyKey
+            });
+        },
+
+        checkExtensions: function () {
+            var ext, i, algo;
+            while (ext = this.extensions.pop()) {
+                algo = this.getAlgorithm(ext.srcKey);
+                if(algo !== undefined) {
+                    ext.destination.prototype[ext.propertyKey] = algo.prototype[ext.propertyKey];
+                }
+            }
         }
     };
 
@@ -52,9 +69,11 @@ WillyLoman = (function(){
         this.iteration = 0;
         this.improvements = 0;
         this.distance = Number.MAX_VALUE;
+        WillyLoman.checkExtensions();
         var algo = WillyLoman.getAlgorithm(algoKey);
-        if(algo === undefined)
+        if(algo === undefined) {
             throw "Algorithm [" + algoKey + "] not found.";
+        }
         else {
             this.algo = new algo(this);
             var tsp = this;
@@ -93,8 +112,8 @@ WillyLoman = (function(){
     };
 
     Solver.prototype.getPossible = function(){
-        var result = [];
-        var pl = this.points.length;
+        var result = [],
+            pl = this.points.length;
         for(var i = 0; i < pl; i++) {
             result.push(i);
         }
@@ -102,12 +121,15 @@ WillyLoman = (function(){
     };
 
     Solver.prototype.pathDistance = function(indexes){
-        var pts = this.points;
-        var l = pts.length;
-        var distance = WillyLoman.distance;
-        var d = distance(pts[indexes[0]], pts[indexes[l - 1]]);
-        for(var i = 1; i < l; i++)
+
+        var pts = this.points,
+            l = pts.length,
+            distance = WillyLoman.distance,
+            d = distance(pts[indexes[0]], pts[indexes[l - 1]]);
+
+        for (var i = 1; i < l; i++) {
             d += distance(pts[indexes[i]], pts[indexes[i - 1]]);
+        }
         return d;
     };
 

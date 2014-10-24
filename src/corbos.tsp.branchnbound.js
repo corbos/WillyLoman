@@ -13,7 +13,7 @@
         this.initDistances();
         this.setUpCandidates();
     };
-    
+
     BranchNBound.prototype.initDistances = function() {
         this.distances = [];
         var pts = this.solver.points;
@@ -22,7 +22,7 @@
             for (var j = i + 1; j < pts.length; j++) {
                 this.distances[i][j - i - 1] = willy.distance(pts[i],pts[j]);
             }
-        } 
+        }
     };
 
     BranchNBound.prototype.sortDistanceDesc = function(a,b) { return b.distance - a.distance; };
@@ -46,7 +46,7 @@
 
         var count = 0;
         var pts = this.solver.points;
-        var solution = this.solution;      
+        var solution = this.solution;
         var d = 0.0,
             candidates,
             c;
@@ -54,7 +54,7 @@
         while(count++ < 1000) {
 
             candidates = this.candidates[this.candidates.length - 1];
-           
+
             // no more options at this depth
             if(candidates.length === 0) {
                 this.backup();

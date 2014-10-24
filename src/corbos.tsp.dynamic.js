@@ -7,12 +7,12 @@
         this.distances = [];
         this.cache = {};
         this.initDistances();
-    };   
-
-    var sortInt = function (a, b) { return a - b; };
+    };
 
     willy.extendAlgorithm(Dynamic, 'BranchNBound', 'initDistances');
     willy.extendAlgorithm(Dynamic, 'BranchNBound', 'lookupDistance');
+
+    var sortInt = function (a, b) { return a - b; };
 
     var getKey = function (indexes) {
         indexes.sort(sortInt);
@@ -42,7 +42,7 @@
         if (this.cache[key] !== undefined)
             return this.cache[key];
 
-        for (var i = 0; i < len; i++) { 
+        for (var i = 0; i < len; i++) {
             next = rest.slice(0, i).concat(rest.slice(i + 1));
             result = this.minDistance(rest[i], next);
             d = this.lookupDistance(start, rest[i]) + result.distance;
@@ -64,7 +64,7 @@
 
     willy.register({
         key: 'Dynamic',
-        name: 'Dynamic',
+        name: 'Dynamic Programming',
         Dynamic: Dynamic
     });
 

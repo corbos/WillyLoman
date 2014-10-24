@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>WillyLoman and the Traveling Salesman Problem</title> 
+<title>WillyLoman and the Traveling Salesman Problem</title>
 <style>
 body{
     background-color:#EEE;
@@ -64,7 +64,7 @@ Improvements: <span id="spnImprovement"></span>
     var ui = new WillyLoman.UI(byId('thecanvas'), notify);
     for(var key in WillyLoman.algorithms) {
         ddlAlgo.appendChild(new Option(WillyLoman.algorithms[key].name, key));
-    }   
+    }
     byId('btnAddRandom').addEventListener('click', function() {
         ui.addRandom(byId('txtAddCount').value);
     });
