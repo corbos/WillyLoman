@@ -9,7 +9,7 @@
         var result = [];
         var possible = this.solver.getPossible();
         while(possible.length > 0){
-            var index = willy.rand(possible.length - 1);
+            var index = willy.randomInt(possible.length - 1);
             result.push(possible[index]);
             possible.splice(index, 1);
         }      

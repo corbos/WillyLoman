@@ -8,7 +8,7 @@ WillyLoman = (function(){
             this.y = y;
         },
 
-        rand:function(u){
+        randomInt:function(u){
             return Math.floor(Math.random() * (u + 1));
         },
 
@@ -40,7 +40,7 @@ WillyLoman = (function(){
             });
         },
 
-        checkExtensions: function () {
+        processExtensions: function () {
             var ext, i, algo;
             while (ext = this.extensions.pop()) {
                 algo = this.getAlgorithm(ext.srcKey);
@@ -69,7 +69,7 @@ WillyLoman = (function(){
         this.iteration = 0;
         this.improvements = 0;
         this.distance = Number.MAX_VALUE;
-        WillyLoman.checkExtensions();
+        WillyLoman.processExtensions();
         var algo = WillyLoman.getAlgorithm(algoKey);
         if(algo === undefined) {
             throw "Algorithm [" + algoKey + "] not found.";

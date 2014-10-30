@@ -19,7 +19,11 @@
                 ui.draw();
                 ui.improvements = ui.solver.improvements;
             }
-            notify(ui.solver.distance, ui.solver.iteration, ui.solver.improvements);
+            notify({
+                distance: ui.solver.distance, 
+                iteration: ui.solver.iteration, 
+                improvements: ui.solver.improvements
+            });
         };
         this.solver = new WillyLoman.Solver(uiNotify);      
 
@@ -69,7 +73,7 @@
             if(!isNaN(count)) { 
                 var pts = this.solver.points;
                 for(var i = 0; i < count; i++){
-                    this.solver.addPoint(WillyLoman.rand(this.canvas.width), WillyLoman.rand(this.canvas.height));                    
+                    this.solver.addPoint(WillyLoman.randomInt(this.canvas.width), WillyLoman.randomInt(this.canvas.height));                    
                 }
                 this.draw();             
             }

@@ -7,7 +7,14 @@ body{
     background-color:#EEE;
 }
 #thecanvas {
-    background-color:#FFFFFF;
+    background-color:#FFF;  
+}
+#algoDiv {
+    width:800px;
+    clear:both;
+}
+#spnPoint {
+    float:right;
 }
 </style>
 </head>
@@ -23,12 +30,15 @@ Click on the canvas to add cities.
 <canvas id="thecanvas" width="800" height="500">
 Your browser does not support the canvas element. Sorry.
 </canvas>
-<div>
-<select id="ddlAlgo">
-</select>
-<input type="button" id="btnGo" value="Solve" />
-<input type="button" id="btnStop" value="Stop" />
-<input type="button" id="btnClear" value="Clear" />
+<div id="algoDiv">
+    <select id="ddlAlgo"></select>
+    <input type="button" id="btnGo" value="Solve" />
+    <input type="button" id="btnStop" value="Stop" />
+    <input type="button" id="btnClear" value="Clear" />
+    <span id="spnPoint">
+        Cities
+        <span id="spnPointCount">0</span>
+    </span>
 </div>
 <p>
 Distance: <span id="spnDistance"></span><br />
@@ -52,21 +62,27 @@ Improvements: <span id="spnImprovement"></span>
 <script type="text/javascript">
 (function() {
     var byId = function(id) { return document.getElementById(id); };
-    var spnDistance = byId('spnDistance');
-    var spnIteration = byId('spnIteration');
-    var spnImprovement = byId('spnImprovement');
-    var ddlAlgo = byId('ddlAlgo');
-    var notify = function(distance, iteration, improvements) {
-        spnDistance.innerHTML = distance;
-        spnIteration.innerHTML = iteration;
-        spnImprovement.innerHTML = improvements;
+
+    var thecanvas = byId('thecanvas'),
+        spnDistance = byId('spnDistance'),
+        spnIteration = byId('spnIteration'),
+        spnImprovement = byId('spnImprovement'),
+        spnPointCount = byId('spnPointCount'),
+        ddlAlgo = byId('ddlAlgo');
+
+    var notify = function(data) {
+        spnDistance.innerHTML = data.distance;
+        spnIteration.innerHTML = data.iteration;
+        spnImprovement.innerHTML = data.improvements; 
     };
-    var ui = new WillyLoman.UI(byId('thecanvas'), notify);
+
+    var ui = new WillyLoman.UI(thecanvas, notify);
     for(var key in WillyLoman.algorithms) {
         ddlAlgo.appendChild(new Option(WillyLoman.algorithms[key].name, key));
     }
     byId('btnAddRandom').addEventListener('click', function() {
         ui.addRandom(byId('txtAddCount').value);
+        spnPointCount.innerHTML = ui.solver.points.length;
     });
     byId('btnClear').addEventListener('click', function() {
         ui.clear();
@@ -76,6 +92,9 @@ Improvements: <span id="spnImprovement"></span>
     });
     byId('btnStop').addEventListener('click', function() {
         ui.stop();
+    });
+    thecanvas.addEventListener('mousedown', function() {
+        setTimeout(function () { spnPointCount.innerHTML = ui.solver.points.length; }, 0);
     });
 })();
 </script>

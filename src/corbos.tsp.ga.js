@@ -32,10 +32,10 @@
     GA.prototype.mutate = function (individual, mutationCount) {
         var gene = individual.gene.slice(0);
         for(var i = 0; i < mutationCount; i++) {
-            var mutateIndex = willy.rand(gene.length - 1);
+            var mutateIndex = willy.randomInt(gene.length - 1);
             var index = gene[mutateIndex];
             gene.splice(mutateIndex, 1);
-            gene.splice(willy.rand(gene.length - 1), 0, index);
+            gene.splice(willy.randomInt(gene.length - 1), 0, index);
         }
         var mutant = { gene: gene };
         mutant.distance = this.solver.pathDistance(mutant.gene);
@@ -48,10 +48,10 @@
         var gl = parent1.gene.length;
         var remains = parent2.gene.slice(0);
 
-        var start = willy.rand(gl - 1);
-        var end = willy.rand(gl - 1);
+        var start = willy.randomInt(gl - 1);
+        var end = willy.randomInt(gl - 1);
         while(start === end)
-            end = willy.rand(gl - 1);
+            end = willy.randomInt(gl - 1);
 
         while(start !== end) {
             var index = parent1.gene[start];
@@ -79,7 +79,7 @@
             for(j = 0; j < sl; j++) {
                 if(i !== j) {
                     child = this.crossover(survivors[i], survivors[j]);
-                    child = this.mutate(child, willy.rand(2));
+                    child = this.mutate(child, willy.randomInt(2));
                     survivors.push(child);
                 }
             }

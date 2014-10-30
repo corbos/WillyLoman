@@ -23,7 +23,7 @@
         var sl = survivors.length;
         for(var i = 0; i < 9; i++) {
             for(var j = 0; j < sl; j++) {
-                survivors.push(this.mutate(survivors[j], willy.rand(5) + 1));
+                survivors.push(this.mutate(survivors[j], willy.randomInt(5) + 1));
             }
         }
         survivors.sort(this.sortDistance);

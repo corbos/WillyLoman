@@ -26,13 +26,13 @@
         this.solver = solver;
         this.distances = [];
         this.cache = {};
-        this.initDistances();
+        this.initCachedDistances();
         var instructionSet = new InstructionSet();
         instructionSet.toDo.push(new InstructionState(0, solver.getPossible().slice(1)));
         this.instructions = [instructionSet];
     };
 
-    willy.extendAlgorithm(Dynamic, 'BranchNBound', 'initDistances');
+    willy.extendAlgorithm(Dynamic, 'BranchNBound', 'initCachedDistances');
     willy.extendAlgorithm(Dynamic, 'BranchNBound', 'lookupDistance');
 
     Dynamic.prototype.solve = function () {
