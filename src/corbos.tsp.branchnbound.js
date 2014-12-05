@@ -22,11 +22,12 @@
         }
     };
 
-    BranchNBound.prototype.sortDistanceDesc = function(a,b) { return b.distance - a.distance; };
+    var sortDistanceDesc = function(a,b) { return b.distance - a.distance; };
 
     BranchNBound.prototype.setUpCandidates = function() {
         var parent = this.solution[this.solution.length - 1];
-        var sortable = this.possible.filter(function(i) {
+        var sortable = this.possible
+            .filter(function(i) {
                 return this.solution.indexOf(i) === -1
             }, this)
             .map(function(i) {
@@ -35,7 +36,7 @@
                     distance: this.lookupDistance(parent, i)
                 };
             }, this);
-        sortable.sort(this.sortDistanceDesc);
+        sortable.sort(sortDistanceDesc);
         this.candidates.push(sortable.map(function(i) {
             return i.index;
         }));
@@ -64,8 +65,9 @@
 
             minDistance = Number.MAX_VALUE
             candidates.forEach(function (j) {
-                if(i !== j)
+                if(i !== j) {
                     minDistance = Math.min(minDistance, this.lookupDistance(i, j));
+                }
             }, this);
 
             if (minDistance < maxDistance) {
