@@ -2,7 +2,7 @@
 
 Helps you run and visualize algorithms that solve the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem).
 
-#To get started, create a constructor:
+###To get started, create a constructor:
 
 ```javascript
 var MyAlgorithm = function (solver) {
@@ -14,7 +14,7 @@ The argument `solver` is a reference to the WillyLoman.Solver that will run your
 an array of WillyLoman.Points that represent the x and y coordinates of each city in your tour. They live in `solver.points`.
 (Be careful not to change them.)
 
-#Add a `solve` function:
+###Add a `solve` function:
 
 ```javascript
 MyAlgorithm.prototype.solve = function () {
@@ -33,7 +33,7 @@ likely lock up the runtime.
 3. `solve` should return an array of indexes. Each index is an index of the solver's `points` array. Each index must appear
 once and only once. Anything else will cause problems. Include indexes in the order you want to visit each point/city.
 
-#Register your algorithm with WillyLoman inside an object:
+###Register your algorithm with WillyLoman inside an object:
 
 ```javascript
 WillyLoman.register({
@@ -49,7 +49,7 @@ Notes
 3. The name of your algorithm property is significant. It will be used to reference your algorithm. Make sure it's unique
 across all algorithms WillyLoman has registered. Otherwise, bad things will happen.
 
-#Run it:
+###Run it:
 
 ```javascript
 var solver = new WillyLoman.Solver(function () {
@@ -64,7 +64,7 @@ solver.addPoint(100, 100);
 solver.solve("MyAlgorithm");  // Note that "MyAlgorithm" matches the registration object's constructor property.
 ```
 
-#If you want to visualize what's going on, consider using WillyLoman.UI:
+###If you want to visualize what's going on, consider using WillyLoman.UI:
 
 ```javascript
 var canvas = document.getElementById('myCanvas');
