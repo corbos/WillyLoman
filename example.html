@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>WillyLoman and the Traveling Salesman Problem</title>
+<title>WillyLoman and the Travelling Salesman Problem</title>
 <style>
 body{
     background-color:#EEE;
@@ -9,7 +9,7 @@ body{
 #thecanvas {
     background-color:#FFF;  
 }
-#algoDiv {
+#divAlgo {
     width:800px;
     clear:both;
 }
@@ -24,25 +24,25 @@ Click on the canvas to add cities.
 </p>
 <p>
 ...or add
-<input type="text" id="txtAddCount" value="35" /> random points.
-<input type="button" id="btnAddRandom" value="Add" />
+<input type="text" id="txtAddCount" value="35"> random points.
+<button type="button" id="btnAddRandom">Add</button>
 </p>
 <canvas id="thecanvas" width="800" height="500">
 Your browser does not support the canvas element. Sorry.
 </canvas>
-<div id="algoDiv">
+<div id="divAlgo">
     <select id="ddlAlgo"></select>
-    <input type="button" id="btnGo" value="Solve" />
-    <input type="button" id="btnStop" value="Stop" />
-    <input type="button" id="btnClear" value="Clear" />
+    <button type="button" id="btnGo">Solve</button>
+    <button type="button" id="btnStop">Stop</button>
+    <button type="button" id="btnClear">Clear</button>
     <span id="spnPoint">
         Cities
         <span id="spnPointCount">0</span>
     </span>
 </div>
 <p>
-Distance: <span id="spnDistance"></span><br />
-Iteration: <span id="spnIteration"></span><br />
+Distance: <span id="spnDistance"></span><br>
+Iteration: <span id="spnIteration"></span><br>
 Improvements: <span id="spnImprovement"></span>
 </p>
 <script type="text/javascript" src="src/WillyLoman.js"></script>

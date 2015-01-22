@@ -32,7 +32,6 @@
     };
 
     willy.register({
-        key: 'GAMutation',
         name: 'Genetic Algorithm - Mutation Only',
         GAMutation: GAMutation
     });

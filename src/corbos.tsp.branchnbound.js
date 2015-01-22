@@ -84,7 +84,6 @@
     };
 
     willy.register({
-        key: 'BranchNBound',
         name: 'Branch And Bound (not really)',
         BranchNBound: BranchNBound
     });

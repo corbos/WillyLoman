@@ -88,7 +88,6 @@
     };
 
     willy.register({
-        key: 'Dynamic',
         name: 'Dynamic Programming',
         Dynamic: Dynamic
     });

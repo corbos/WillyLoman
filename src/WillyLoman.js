@@ -23,7 +23,13 @@ WillyLoman = (function(){
         extensions:[],
 
         register: function(algo) {
-           this.algorithms[algo.key] = algo;
+            for(var key in algo) {
+                if(algo.hasOwnProperty(key) && key !== "name" && key !== "key") {
+                    algo.key = key;
+                    this.algorithms[key] = algo;
+                    break;
+                }
+            }          
         },
 
         getAlgorithm: function(key) {
@@ -70,20 +76,25 @@ WillyLoman = (function(){
         this.improvements = 0;
         this.distance = Number.MAX_VALUE;
         WillyLoman.processExtensions();
-        var algo = WillyLoman.getAlgorithm(algoKey);
+
+        var algo = WillyLoman.getAlgorithm(algoKey),
+            tsp = this;
+
         if(algo === undefined) {
             throw "Algorithm [" + algoKey + "] not found.";
         }
         else {
-            this.algo = new algo(this);
-            var tsp = this;
+            this.algo = new algo(this);         
             this.timeout = setTimeout(function() { tsp.iterate(); }, 0);
         }
     };
 
     Solver.prototype.iterate = function() {
-        var solution = this.algo.solve();
-        var distance = this.pathDistance(solution);
+
+        var solution = this.algo.solve(),
+            distance = this.pathDistance(solution),
+            tsp = this;
+
         if(distance < this.distance) {
             this.distance = distance;
             this.solution = solution;
@@ -91,8 +102,7 @@ WillyLoman = (function(){
         }
         this.iteration++;
         this.notify();
-        if(!this.algo.done) {
-            var tsp = this;
+        if(!this.algo.done) {          
             this.timeout = setTimeout(function() { tsp.iterate(); }, 0);
         }
         else {
@@ -112,9 +122,12 @@ WillyLoman = (function(){
     };
 
     Solver.prototype.getPossible = function(){
+
         var result = [],
-            pl = this.points.length;
-        for(var i = 0; i < pl; i++) {
+            pl = this.points.length,
+            i = 0;
+
+        for(; i < pl; i++) {
             result.push(i);
         }
         return result;
@@ -125,9 +138,10 @@ WillyLoman = (function(){
         var pts = this.points,
             l = pts.length,
             distance = WillyLoman.distance,
-            d = distance(pts[indexes[0]], pts[indexes[l - 1]]);
+            d = distance(pts[indexes[0]], pts[indexes[l - 1]]),
+            i = 1;
 
-        for (var i = 1; i < l; i++) {
+        for (; i < l; i++) {
             d += distance(pts[indexes[i]], pts[indexes[i - 1]]);
         }
         return d;

@@ -20,7 +20,6 @@
     };
 
     willy.register({
-        key: 'OneRandom',
         name: 'One Random Solution',
         OneRandom: OneRandom
     });

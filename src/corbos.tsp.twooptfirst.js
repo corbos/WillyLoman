@@ -60,7 +60,6 @@
     };
 
     willy.register({
-        key: 'TwoOptFirst',
         name: '2 Opt - First Improvement',
         TwoOptFirst: TwoOptFirst
     });

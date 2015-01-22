@@ -11,7 +11,6 @@
     };
 
     willy.register({
-        key: 'IterateRandom',
         name: 'Iterate Random Solutions',
         IterateRandom: IterateRandom
     });

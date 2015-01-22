@@ -1,9 +1,10 @@
 (function(WillyLoman){
     'use strict';
 
-    var CIRCLE_RADIUS = 4.0;
-    var LINE_COLOR = '#0000FF';  
-    var LINE_WIDTH = 1.0;  
+    var CIRCLE_RADIUS = 4.0,
+        LINE_COLOR = '#0000FF',  
+        LINE_WIDTH = 1.0,
+        FULL_CIRCLE = Math.PI * 2;
 
     var UI = function(canvas, notify) {
 
@@ -13,6 +14,7 @@
         var ui = this;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
+
         var uiNotify = function() {
             // only draw if things have improved.
             if(ui.improvements != ui.solver.improvements) {
@@ -40,17 +42,17 @@
 
         draw: function() {
 
-            var pts = this.solver.points;
-            var pl = pts.length;
-            var solution = this.solver.solution;
-            var ctx = this.ctx;
-            var fullCircle = Math.PI * 2;
+            var pts = this.solver.points,
+                pl = pts.length,
+                solution = this.solver.solution,
+                ctx = this.ctx,
+                i = 0;
 
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
            
-            for(var i = 0; i < pl; i++){
+            for(i = 0; i < pl; i++){
                 ctx.beginPath();
-                ctx.arc(pts[i].x, pts[i].y, CIRCLE_RADIUS, 0, fullCircle, true);
+                ctx.arc(pts[i].x, pts[i].y, CIRCLE_RADIUS, 0, FULL_CIRCLE, true);
                 ctx.fill();
             }
 
@@ -59,7 +61,7 @@
                 ctx.strokeStyle = LINE_COLOR;
                 ctx.lineWidth = LINE_WIDTH;              
                 ctx.moveTo(pts[solution[0]].x, pts[solution[0]].y);
-                for(var i = 1; i < pl; i++)
+                for(i = 1; i < pl; i++)
                       ctx.lineTo(pts[solution[i]].x, pts[solution[i]].y);
                 ctx.lineTo(pts[solution[0]].x, pts[solution[0]].y);    
                 ctx.stroke(); 
@@ -68,12 +70,19 @@
         },
 
         addRandom: function(n){
-            this.solver.solution = [];
-            var count = parseInt(n);
-            if(!isNaN(count)) { 
-                var pts = this.solver.points;
-                for(var i = 0; i < count; i++){
-                    this.solver.addPoint(WillyLoman.randomInt(this.canvas.width), WillyLoman.randomInt(this.canvas.height));                    
+
+            var count = parseInt(n, 10),
+                pts = this.solver.points,
+                i = 0;
+
+            this.solver.solution = [];          
+
+            if(!isNaN(count)) {               
+                for(; i < count; i++){
+                    this.solver.addPoint(
+                        WillyLoman.randomInt(this.canvas.width), 
+                        WillyLoman.randomInt(this.canvas.height)
+                    );                    
                 }
                 this.draw();             
             }

@@ -94,7 +94,6 @@
     };
 
     willy.register({
-        key: 'GA',
         name: 'Genetic Algorithm',
         GA: GA
     });

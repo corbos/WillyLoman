@@ -10,7 +10,6 @@
     };
 
     willy.register({
-        key: 'InOrder',
         name: 'In Order Traversal',
         InOrder: InOrder
     });

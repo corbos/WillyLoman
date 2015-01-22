@@ -42,7 +42,6 @@
     };
 
     willy.register({
-        key: 'GACrossover',
         name: 'Genetic Algorithm - Crossover Only',
         GACrossover: GACrossover
     });
