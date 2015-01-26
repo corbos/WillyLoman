@@ -81,7 +81,8 @@ var ui = new WillyLoman.UI(canvas, notify);
 ui.solve("MyAlgorithm");
 ```
 
-WillyLoman.UI expects a reference to an HTML canvas and a notification callback.
+WillyLoman.UI expects a reference to an HTML canvas and a notification callback. The
+callback isn't required.
 
 It will
 
@@ -89,4 +90,10 @@ It will
 2. Let you add a bunch of random cities within the bounds of its canvas via `addRandom(number)`.
 3. Draw the current solution on its canvas as the solver runs.
 
-A full example: <https://github.com/corbos/WillyLoman/blob/master/example.html>
+Full example of usage: <https://github.com/corbos/WillyLoman/blob/master/example.html>
+
+or...
+
+###Demo
+
+<http://scatterbright.com/tsp.html>
