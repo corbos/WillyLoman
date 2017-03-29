@@ -94,6 +94,6 @@ Full example of usage: <https://github.com/corbos/WillyLoman/blob/master/example
 
 or...
 
-###Demo
+### Demo
 
 <http://scatterbright.com/tsp.html>
